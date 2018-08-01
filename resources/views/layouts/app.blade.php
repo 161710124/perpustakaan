@@ -12,6 +12,7 @@
 
     <!-- Scripts -->
     <script src="/js/custom.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     @yield('scripts')
 
     
@@ -44,6 +45,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url('/') }}">Home</a>
                             </li>
+                            @endif
                             @role('admin')
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('authors.index') }}">Penulis</a>
@@ -51,8 +53,13 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('books.index') }}">Buku</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('members.index') }}">Member</a>
+                            </li>
                             @endrole
-                        @endif
+                            @if (Auth()->check())
+                                <li><a class="nav-link" href="{{ url('/settings/profile') }}">Profil</a></li>
+                            @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -72,6 +79,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ url('/settings/password') }}"><i class="fa fa-btn fa-lock"></i> Ubah Password</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

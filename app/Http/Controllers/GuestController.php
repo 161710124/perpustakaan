@@ -31,7 +31,7 @@ class GuestController extends Controller
         $html = $htmlBuilder
         ->addColumn(['data' => 'title', 'name'=>'title', 'title'=>'Judul'])
         ->addColumn(['data' => 'stock', 'name'=>'stock', 'title'=>'Stok', 'orderable'=>false,
-            'searchable'=>false])
+            '   searchable'=>false])
         ->addColumn(['data' => 'author.name', 'name'=>'author.name', 'title'=>'Penulis'])
         ->addColumn(['data' => 'action', 'name'=>'action', 'title'=>'', 'orderable'=>false, 
             'se\archable'=>false]);
