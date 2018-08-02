@@ -47,4 +47,12 @@ Route::group(['prefix'=>'admin','middleware'=>['auth', 'role:admin']], function 
 		'as'=>'statistics.index',
 		'uses'=>'StatisticsController@index'
 	]);
+	Route::get('export/books', [
+	'as' => 'export.books',
+	'uses' => 'BookController@export'
+	]);
+	Route::post('export/books', [
+	'as' => 'export.books.post',
+	'uses' => 'BookController@exportPost'
+	]);
 });
