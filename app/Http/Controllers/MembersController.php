@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 use App\Role;
 use App\User;
 use Yajra\DataTables\Html\Builder;
-use Yajra\Datatables\Facades\Datatables;
+use Yajra\Datatables\Datatables;
 use App\Http\Requests\StoreMemberRequest;
+use App\Http\Requests\UpdateMemberRequest;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Mail;
 
@@ -23,6 +24,9 @@ class MembersController extends Controller
     if ($request->ajax()) {
       $members = Role::where('name', 'member')->first()->users;
       return Datatables::of($members)
+      ->addColumn('name', function($member) {
+        return '<a href="'.route('members.show', $member->id).'">'.$member->name.'</a>';
+        })
         ->addColumn('action', function($member){
         return view('datatable._action', [
           'model' => $member,
@@ -90,7 +94,8 @@ class MembersController extends Controller
      */
     public function show($id)
     {
-        //
+        $member = User::find($id);
+        return view('members.show', compact('member'));
     }
 
     /**
@@ -111,9 +116,14 @@ class MembersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateMemberRequest $request, $id)
     {
-        //
+        $member = User::find($id);
+        $member->update($request->only('name','email'));
+        Session::flash("flash_notification", [
+            "level"=>"success",
+            "message"=>"Berhasil menyimpan $member->name"]);
+        return redirect()->route('members.index');
     }
 
     /**
@@ -124,6 +134,14 @@ class MembersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $member = User::find($id);
+          if ($member->hasRole('member')) {
+          $member->delete();
+          Session::flash("flash_notification", [
+            "level"=>"success",
+            "message"=>"Member berhasil dihapus"
+          ]);
+        }
+        return redirect()->route('members.index');
     }
 }

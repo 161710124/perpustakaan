@@ -56,6 +56,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('members.index') }}">Member</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('statistics.index') }}">Peminjaman</a>
+                            </li>
                             @endrole
                             @if (Auth()->check())
                                 <li><a class="nav-link" href="{{ url('/settings/profile') }}">Profil</a></li>
